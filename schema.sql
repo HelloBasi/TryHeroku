@@ -35,7 +35,8 @@ CREATE TABLE users (
     name TEXT NOT NULL,
     hash TEXT NOT NULL,
     email TEXT NOT NULL,
-    phone_number TEXT NOT NULL
+    phone_number TEXT NOT NULL,
+    points INTEGER NOT NULL
 );
 
 CREATE TABLE materials (
@@ -55,6 +56,18 @@ CREATE TABLE tasks (
     collector_id INTEGER NOT NULL,
     FOREIGN KEY (collector_id) REFERENCES collectors (id)
 );
+
+-- create current_tasks table
+
+CREATE TABLE current_tasks (
+    id INTEGER PRIMARY KEY,
+    task_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY (task_id) REFERENCES tasks (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+-- create task_completions table
 
 CREATE TABLE task_completions (
     id INTEGER PRIMARY KEY,

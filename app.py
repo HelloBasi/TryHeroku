@@ -208,5 +208,25 @@ def collector_register():
         return render_template("collector_register.html")
     
 
+@app.route("/profile", methods=["GET", "POST"])
+@user_login_required
+def profile():
+    """Show user profile"""
+    if request.method == "GET":
+        # get user info
+        user = db.execute("SELECT * FROM users WHERE id = ?;", session["user_id"])[0]
+
+        # get the current tasks that user has
+        current_tasks = db.execute("SELECT * FROM tasks JOIN current_tasks ON tasks.id = current_tasks.task_id WHERE current_tasks.user_id = ?;", session["user_id"])
+
+        # get the completed tasks that user has
+        completed_tasks = db.execute("SELECT * FROM tasks JOIN completed_tasks ON tasks.id = completed_tasks.task_id WHERE completed_tasks.user_id = ?;", session["user_id"])
+
+        # render the profile page
+        return render_template("profile.html", volunteer=user, current_tasks=current_tasks, completed_tasks=completed_tasks)
+    else:
+        return redirect("/profile")
+    
+
 if __name__ == '__main__':
     app.run(debug=True)
