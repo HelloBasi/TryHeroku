@@ -262,6 +262,11 @@ def task(task_id):
         return redirect("/tasks")
     
 
+@app.route("/redeem", methods=["GET", "POST"])
+@user_login_required
+def redeem():
+    return render_template("redeem.html")
+
 @app.route("/collector/profile", methods=["GET", "POST"])
 @collector_login_required
 def collector_profile():
