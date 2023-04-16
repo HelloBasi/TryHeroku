@@ -228,5 +228,37 @@ def profile():
         return redirect("/profile")
     
 
+@app.route("/tasks", methods=["GET", "POST"])
+@user_login_required
+def tasks():
+    """Show tasks"""
+    if request.method == "GET":
+        # get all tasks
+        tasks = db.execute("SELECT * FROM tasks;")
+
+        # render the tasks page
+        return render_template("tasks.html", tasks=tasks)
+    else:
+        return redirect("/tasks")
+    
+
+@app.route("/tasks/<int:task_id>", methods=["GET", "POST"])
+@user_login_required
+def task(task_id):
+    """Show task"""
+    if request.method == "GET":
+        # get task
+        task = db.execute("SELECT * FROM tasks WHERE id = ?;", task_id)[0]
+
+        # render the task page
+        return render_template("task.html", task=task)
+    else:
+        # add the task to current tasks of the user if it is not already in
+        if not db.execute("SELECT * FROM current_tasks WHERE user_id = ? AND task_id = ?;", session["user_id"], task_id):
+            db.execute("INSERT INTO current_tasks (user_id, task_id) VALUES (?, ?);", session["user_id"], task_id)
+
+        return redirect("/tasks")
+    
+
 if __name__ == '__main__':
     app.run(debug=True)

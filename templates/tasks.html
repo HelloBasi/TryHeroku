@@ -12,7 +12,7 @@
                 {% for task in tasks %}
 				<div class="col-md-4">
 					<div class="card">
-						<img class="card-img-top" alt="Bootstrap Thumbnail First" src="https://www.layoutit.com/img/people-q-c-600-200-1.jpg" />
+						<img class="card-img-top" alt="Bootstrap Thumbnail First" src="{{ url_for('static', filename='logo.png')}}"/>
 						<div class="card-block">
 							<h5 class="card-title">
 								{{ task.name }}
