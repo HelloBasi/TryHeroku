@@ -64,7 +64,7 @@ def login():
         session["user_id"] = rows[0]["id"]
 
         # Redirect user to home page
-        return redirect("/")
+        return redirect("/profile")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -115,9 +115,98 @@ def register():
 
         flash("Registered!")
 
-        return redirect("/")
+        return redirect("/profile")
     else:
         return render_template("register.html")
+
+
+@app.route("/collector/login", methods=["GET", "POST"])
+def collector_login():
+    """Log collector in"""
+
+    # Forget any user_id
+    session.clear()
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # Ensure username was submitted
+        if not request.form.get("email"):
+            return apology("must provide email", 403)
+
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            return apology("must provide password", 403)
+
+        # Query database for username
+        rows = db.execute("SELECT * FROM collectors WHERE email = :email",
+                          email=request.form.get("email"))
+
+        # Ensure username exists and password is correct
+        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+            return apology("invalid username and/or password", 403)
+
+        # Remember which user has logged in
+        session["collector_id"] = rows[0]["id"]
+
+        # Redirect user to home page
+        return redirect("/collector/profile")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("collector_login.html")
+    
+
+@app.route("/collector/logout")
+def collector_logout():
+    """Log collector out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")
+
+
+@app.route("/collector/register", methods=["GET", "POST"])
+def collector_register():
+    """Register collector"""
+    if request.method == "POST":
+
+        if not (email := request.form.get("email")):
+            return apology("MISSING USERNAME")
+
+        if not (password := request.form.get("password")):
+            return apology("MISSING PASSWORD")
+
+        if not (confirmation := request.form.get("confirmation")):
+            return apology("PASSWORD DON'T MATCH")
+
+        # Query database for username
+        rows = db.execute("SELECT * FROM collectors WHERE email = ?;", email)
+
+        # Ensure username not in database
+        if len(rows) != 0:
+            return apology(f"The user '{email}' already exists. Please choose another email.")
+
+        # Ensure first password and second password are matched
+        if password != confirmation:
+            return apology("password not matched")
+
+        # Insert all into database
+        id = db.execute("INSERT INTO collectors (email, hash, name, phone_number, address, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?);",
+                        email, generate_password_hash(password), request.form.get("name"), request.form.get("phone_number"),
+                        request.form.get("address"), float(request.form.get("latitude")), float(request.form.get("longitude")))
+        
+        # Remember which user has logged in
+        session["collector_id"] = id
+
+        flash("Registered!")
+
+        return redirect("/collector/profile")
+    else:
+        return render_template("collector_register.html")
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

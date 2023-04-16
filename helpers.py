@@ -43,6 +43,6 @@ def collector_login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get("collector_id") is None:
-            return redirect("/login_collector")
+            return redirect("/collector/login")
         return f(*args, **kwargs)
     return decorated_function

@@ -7,7 +7,7 @@ drop table if exists task_completions;
 drop table if exists tasks;
 drop table if exists materials;
 drop table if exists users;
-drop table if exists collection_points;
+drop table if exists collectors;
 drop table if exists businesses;
 
 
@@ -19,10 +19,11 @@ CREATE TABLE businesses (
     phone_number TEXT NOT NULL
 );
 
-CREATE TABLE collection_points (
+CREATE TABLE collectors (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     email TEXT NOT NULL,
+    hash TEXT NOT NULL,
     phone_number TEXT NOT NULL,
     address TEXT NOT NULL,
     latitude REAL NOT NULL,
@@ -42,8 +43,8 @@ CREATE TABLE materials (
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     condition TEXT NOT NULL,
-    collection_point_id INTEGER NOT NULL,
-    FOREIGN KEY (collection_point_id) REFERENCES collection_points (id)
+    collector_id INTEGER NOT NULL,
+    FOREIGN KEY (collector_id) REFERENCES collectors (id)
 );
 
 CREATE TABLE tasks (
@@ -51,8 +52,8 @@ CREATE TABLE tasks (
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     points INTEGER NOT NULL,
-    collection_point_id INTEGER NOT NULL,
-    FOREIGN KEY (collection_point_id) REFERENCES collection_points (id)
+    collector_id INTEGER NOT NULL,
+    FOREIGN KEY (collector_id) REFERENCES collectors (id)
 );
 
 CREATE TABLE task_completions (
