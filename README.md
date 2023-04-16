@@ -11,3 +11,9 @@ Imagine that I a small business that uses plastic bags to produce cloths. For me
 small businesses will deal directly with the collection points to describe their needs and the collection points will deal with the local users to get the materials.
 
 collection points will post them as tasks that can be done by the local users. then local user will do the task and get the reward. the reward will be points and the points can be redeemed by the collection points.
+
+### Deployment
+
+Deployed on pythonanywhere
+
+Visit [http://binbasri101.pythonanywhere.com/](http://binbasri101.pythonanywhere.com/)
