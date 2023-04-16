@@ -34,6 +34,90 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """Log user in"""
+
+    # Forget any user_id
+    session.clear()
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # Ensure username was submitted
+        if not request.form.get("email"):
+            return apology("must provide email", 403)
+
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            return apology("must provide password", 403)
+
+        # Query database for username
+        rows = db.execute("SELECT * FROM users WHERE email = :email",
+                          email=request.form.get("email"))
+
+        # Ensure username exists and password is correct
+        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+            return apology("invalid username and/or password", 403)
+
+        # Remember which user has logged in
+        session["user_id"] = rows[0]["id"]
+
+        # Redirect user to home page
+        return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("login.html")
+
+@app.route('/logout')
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Register user"""
+    if request.method == "POST":
+
+        if not (email := request.form.get("email")):
+            return apology("MISSING USERNAME")
+
+        if not (password := request.form.get("password")):
+            return apology("MISSING PASSWORD")
+
+        if not (confirmation := request.form.get("confirmation")):
+            return apology("PASSWORD DON'T MATCH")
+
+        # Query database for username
+        rows = db.execute("SELECT * FROM users WHERE email = ?;", email)
+
+        # Ensure username not in database
+        if len(rows) != 0:
+            return apology(f"The user '{email}' already exists. Please choose another email.")
+
+        # Ensure first password and second password are matched
+        if password != confirmation:
+            return apology("password not matched")
+
+        # Insert all into database
+        id = db.execute("INSERT INTO users (email, hash, name, phone_number) VALUES (?, ?, ?, ?);",
+                        email, generate_password_hash(password), request.form.get("name"), request.form.get("phone_number"))
+
+        # Remember which user has logged in
+        session["user_id"] = id
+
+        flash("Registered!")
+
+        return redirect("/")
+    else:
+        return render_template("register.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
