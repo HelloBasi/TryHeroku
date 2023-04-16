@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Collector: Profile
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <!-- Collector information section -->
+    <div class="row">
+		<div class="col-md-12">
+			<h3>
+				{{ collector.name}}
+			</h3>
+			<h3>
+				{{ collector.email}}
+			</h3>
+		</div>
+	</div>
+
+    <!-- Collector tasks section -->
+	<div class="row">
+		<div class="col-md-12">
+			<h3 class="text-center text-muted">
+				Tasks
+			</h3>
+		</div>
+	</div>
+
+	<div class="row">
+        {% for task in current_tasks %}
+		<div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" alt="Bootstrap Thumbnail First" src="https://www.layoutit.com/img/people-q-c-600-200-1.jpg" />
+                <div class="card-block">
+                    <h5 class="card-title">
+                        {{ task.name }}
+                    </h5>
+                    <p class="card-text">
+                        <!-- show only first 8 words of the description -->
+                        {{ task.description.split(' ')[:8]|join(' ') }}...
+                    </p>
+                    <p>
+                        <a class="btn btn-primary" href="/collector/tasks/{{ task.id }}">Read more</a> <p>{{ task.points }}</p>
+                        <!-- add button to edit -->
+                        <a class="btn btn-primary" href="/collector/tasks/{{ task.id }}/edit">Edit</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

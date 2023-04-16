@@ -260,5 +260,54 @@ def task(task_id):
         return redirect("/tasks")
     
 
+@app.route("/collector/profile", methods=["GET", "POST"])
+@collector_login_required
+def collector_profile():
+    """Show collector profile"""
+    if request.method == "GET":
+        # get user info
+        collector = db.execute("SELECT * FROM collectors WHERE id = ?;", session["collector_id"])[0]
+
+        # get the current tasks that collector has
+        current_tasks = db.execute("SELECT * FROM tasks WHERE collector_id = ?;", session["collector_id"])
+
+        # render the profile page
+        return render_template("collector_profile.html", collector=collector, current_tasks=current_tasks)
+    else:
+        return redirect("/collector/profile")
+
+
+@app.route("/collector/tasks/<int:task_id>", methods=["GET", "POST"])
+@collector_login_required
+def collector_task(task_id):
+    """Show task"""
+    if request.method == "GET":
+        # get task
+        task = db.execute("SELECT * FROM tasks WHERE id = ?;", task_id)[0]
+
+        # render the task page
+        return render_template("collector_task.html", task=task)
+    else:
+        return redirect("/collector/profile")
+    
+
+@app.route("/collector/tasks/<int:task_id>/edit", methods=["GET", "POST"])
+@collector_login_required
+def collector_task_edit(task_id):
+    """Edit task"""
+    if request.method == "POST":
+        # update the task
+        db.execute("UPDATE tasks SET name = ?, description = ?, points = ? where id = ?;", request.form.get("name"), request.form.get("description"), request.form.get("points"), task_id)
+
+        return redirect("/collector/profile")
+    else:
+        # get task
+        task = db.execute("SELECT * FROM tasks WHERE id = ?;", task_id)[0]
+
+        # render the task page
+        return render_template("collector_task_edit.html", task=task)
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
