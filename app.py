@@ -308,6 +308,19 @@ def collector_task_edit(task_id):
         return render_template("collector_task_edit.html", task=task)
 
 
+@app.route("/collector/tasks/add", methods=["GET", "POST"])
+@collector_login_required
+def collector_task_add():
+    """Add task"""
+    if request.method == "POST":
+        # add the task
+        db.execute("INSERT INTO tasks (name, description, points, collector_id) VALUES (?, ?, ?, ?);", request.form.get("name"), request.form.get("description"), int(request.form.get("points")), session["collector_id"])
+
+        return redirect("/collector/profile")
+    else:
+        # render the task page
+        return render_template("collector_task_add.html")
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
