@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Volunteer: Task
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<div class="card">
+						<img class="card-img-top" alt="Bootstrap Thumbnail First" src="{{ url_for('static', filename='logo.png')}}" />
+						<div class="card-block">
+							<h5 class="card-title">
+								{{ task.name }}
+							</h5>
+							<p class="card-text">
+                                {{ task.description }}
+							</p>
+							<p>
+                                    <!--  a button to edit the task -->
+                                    <a class="btn btn-primary" href="/collector/tasks/{{ task.id }}/edit">Edit</a>
+                    
+                                <p>{{ task.points }}</p>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

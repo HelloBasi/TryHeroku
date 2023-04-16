@@ -63,6 +63,9 @@ def login():
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
 
+        # remember user type
+        session["user_type"] = "user"
+
         # Redirect user to home page
         return redirect("/profile")
 
@@ -113,6 +116,9 @@ def register():
         # Remember which user has logged in
         session["user_id"] = id
 
+        # remember user type
+        session["user_type"] = "user"
+
         flash("Registered!")
 
         return redirect("/profile")
@@ -149,6 +155,9 @@ def collector_login():
         # Remember which user has logged in
         session["collector_id"] = rows[0]["id"]
 
+        # remember user type    
+        session["user_type"] = "collector"
+
         # Redirect user to home page
         return redirect("/collector/profile")
 
@@ -156,16 +165,6 @@ def collector_login():
     else:
         return render_template("collector_login.html")
     
-
-@app.route("/collector/logout")
-def collector_logout():
-    """Log collector out"""
-
-    # Forget any user_id
-    session.clear()
-
-    # Redirect user to login form
-    return redirect("/")
 
 
 @app.route("/collector/register", methods=["GET", "POST"])
@@ -201,6 +200,9 @@ def collector_register():
         # Remember which user has logged in
         session["collector_id"] = id
 
+        # remember user type
+        session["user_type"] = "collector"
+
         flash("Registered!")
 
         return redirect("/collector/profile")
@@ -220,7 +222,7 @@ def profile():
         current_tasks = db.execute("SELECT * FROM tasks JOIN current_tasks ON tasks.id = current_tasks.task_id WHERE current_tasks.user_id = ?;", session["user_id"])
 
         # get the completed tasks that user has
-        completed_tasks = db.execute("SELECT * FROM tasks JOIN completed_tasks ON tasks.id = completed_tasks.task_id WHERE completed_tasks.user_id = ?;", session["user_id"])
+        completed_tasks = db.execute("SELECT * FROM tasks JOIN task_completions ON tasks.id = task_completions.task_id WHERE task_completions.user_id = ?;", session["user_id"])
 
         # render the profile page
         return render_template("profile.html", volunteer=user, current_tasks=current_tasks, completed_tasks=completed_tasks)

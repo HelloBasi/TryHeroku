@@ -9,30 +9,30 @@
     <!-- Collector information section -->
     <div class="row">
 		<div class="col-md-12">
-			<h3>
-				{{ collector.name}}
-			</h3>
-			<h3>
-				{{ collector.email}}
-			</h3>
+			<h4 class="mb-2">
+				Name: {{ collector.name}}
+			</h4>
+			<h4 class="mb-2">
+				Email: {{ collector.email}}
+			</h4>
 		</div>
 	</div>
 
     <!-- Collector tasks section -->
 	<div class="row">
 		<div class="col-md-12">
-			<h3 class="text-center text-muted">
+			<h3 class="text-center text-muted m-4">
 				Tasks
 			</h3>
             <!-- Button to add new tasks -->
-            <a class="btn btn-primary" href="/collector/tasks/add">Add new task</a>
+            <a class="btn btn-primary m-4" href="/collector/tasks/add">Add new task</a>
 		</div>
 	</div>
 
 	<div class="row">
         {% for task in current_tasks %}
 		<div class="col-md-4">
-            <div class="card">
+            <div class="card text-center">
                 <img class="card-img-top" alt="Bootstrap Thumbnail First" src="https://www.layoutit.com/img/people-q-c-600-200-1.jpg" />
                 <div class="card-block">
                     <h5 class="card-title">

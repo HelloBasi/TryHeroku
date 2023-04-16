@@ -9,6 +9,7 @@ drop table if exists materials;
 drop table if exists users;
 drop table if exists collectors;
 drop table if exists businesses;
+drop table if exists current_tasks;
 
 
 -- create tables
@@ -36,7 +37,7 @@ CREATE TABLE users (
     hash TEXT NOT NULL,
     email TEXT NOT NULL,
     phone_number TEXT NOT NULL,
-    points INTEGER NOT NULL
+    points INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE materials (

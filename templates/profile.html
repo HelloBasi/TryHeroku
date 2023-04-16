@@ -17,7 +17,7 @@
 			</h3>
 		</div>
 		<div class="col-md-6">
-			<img alt="Bootstrap Image Preview" src="{{ url_for('static', filename='logo.png')}}" class="rounded-circle" />
+			<img alt="Bootstrap Image Preview" src="{{ url_for('static', filename='logo.png')}}" class="rounded-circle w-25" />
             <!-- add stars with the total points that user has and a button for redeem -->
             <p>Points: {{ volunteer.points }}</p>
             <p>Redeem: <a class="btn btn-primary" href="/redeem">Redeem</a></p>
@@ -25,7 +25,7 @@
 	</div>
 
     <!-- volunteer tasks section -->
-	<div class="row">
+	<div class="row m-4">
 		<div class="col-md-12">
 			<h3 class="text-center text-muted">
 				Current Tasks
@@ -33,10 +33,10 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row m-4">
         {% for task in current_tasks %}
 		<div class="col-md-4">
-            <div class="card">
+            <div class="card text-center">
                 <img class="card-img-top" alt="Bootstrap Thumbnail First" src="https://www.layoutit.com/img/people-q-c-600-200-1.jpg" />
                 <div class="card-block">
                     <h5 class="card-title">
@@ -55,17 +55,17 @@
         {% endfor %}
     </div>
 
-    <div class="row">
+    <div class="row m-4">
 		<div class="col-md-12">
 			<h3 class="text-center text-muted">
 				Completed Tasks
 			</h3>
 		</div>
 	</div>
-    <div class="row">
+    <div class="row m-4">
 		{% for task in completed_tasks %}
 		<div class="col-md-4">
-            <div class="card">
+            <div class="card text-center">
                 <img class="card-img-top" alt="Bootstrap Thumbnail First" src="https://www.layoutit.com/img/people-q-c-600-200-1.jpg" />
                 <div class="card-block">
                     <h5 class="card-title">

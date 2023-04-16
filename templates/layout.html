@@ -31,9 +31,33 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbar">
+                {% if session.user_type == "user" %}
                     <ul class="navbar-nav mr-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/tasks">Tasks</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/redeem">Redeem</a></li>
                     </ul>
+                    <ul class="navbar-nav ml-auto mt-2">
+                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                    </ul>
+                {% elif session.user_type == "collector" %}
+                    <ul class="navbar-nav mr-auto mt-2">
+                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/collector/profile">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/collector/tasks/add">Add_Task</a></li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto mt-2">
+                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                    </ul>
+                {% else %}
+                    <ul class="navbar-nav ml-auto mt-2">
+                        <li class="nav-item"><a class="nav-link" href="/collector/register">Register Collector</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/collector/login">Log In collector</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/register">Register Volunteer</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login">Log In Volunteer</a></li>
+                    </ul>
+                {% endif %}
             </div>
         </nav>
 
